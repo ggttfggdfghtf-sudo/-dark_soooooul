@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Разбор White &amp; Black Souls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#F4F2F0; --bg2:#E7E3E0; --card:#FFFFFF; --ink:#141214; --ink2:#5E585E; --line:#DAD5D2;
+  --coral:#7A1E2C; --coral-soft:#EFE0E0; --rose:#C9A24A; --peach:#CFC6BE; --on-coral:#fff;
+  --sun1:#FFE9B8; --sun2:#C9A24A; --sun3:#141214; --shadow:0 18px 40px -26px rgba(20,10,15,.35);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E0D0F; --bg2:#151316; --card:#1C1A1D; --ink:#EEEAE6; --ink2:#AFA8AC; --line:#332E33;
+  --coral:#D46A7B; --coral-soft:#2E1A20; --rose:#D9B565; --peach:#4A3A40; --on-coral:#0E0D0F;
+  --sun1:#F2D58A; --sun2:#A07E35; --sun3:#050405; --shadow:0 18px 40px -26px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E0D0F; --bg2:#151316; --card:#1C1A1D; --ink:#EEEAE6; --ink2:#AFA8AC; --line:#332E33;
+  --coral:#D46A7B; --coral-soft:#2E1A20; --rose:#D9B565; --peach:#4A3A40; --on-coral:#0E0D0F;
+  --sun1:#F2D58A; --sun2:#A07E35; --sun3:#050405; --shadow:0 18px 40px -26px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:0 80px}
+h1,h2,h3{font-family:'Lora',Georgia,serif;font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+em{font-family:'Lora',Georgia,serif;font-style:italic;font-weight:500;color:var(--coral)}
+.label{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--coral)}
+.hero{position:relative;padding-block:72px 48px;display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center}
+.hero h1{font-size:clamp(40px,7vw,72px);line-height:1.04;margin-top:14px}
+.hero p{color:var(--ink2);font-size:18px;max-width:46ch;margin:20px 0 0}
+.sun{aspect-ratio:1;max-width:100%;width:340px;justify-self:center;border-radius:50%;background:radial-gradient(circle at 50% 62%,var(--sun1) 0%,var(--sun2) 48%,var(--sun3) 78%,transparent 79%);position:relative}
+.sun::after{content:"подарок от команды Маши 🕯";position:absolute;left:-10px;bottom:6%;background:var(--card);color:var(--coral);font-family:'Lora',serif;font-style:italic;font-size:17px;padding:12px 18px;border-radius:6px;box-shadow:var(--shadow);transform:rotate(-5deg)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-inline:-20px;padding:10px 20px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{display:inline-block;color:var(--ink2);text-decoration:none;font-size:14px;font-weight:600;padding:6px 12px;border-radius:999px}
+nav a:hover{background:var(--coral-soft);color:var(--coral)}
+section{padding-top:64px;scroll-margin-top:60px}
+section>h2{font-size:clamp(28px,4.4vw,42px);line-height:1.15;margin-top:10px}
+section>.lead{color:var(--ink2);max-width:62ch;margin:14px 0 0}
+.grid{display:grid;gap:16px;margin-top:28px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow);min-width:0}
+.card h3{font-size:22px;margin-top:14px;line-height:1.25}
+.card p{margin:8px 0 0;color:var(--ink2);font-size:16px}
+.card.hot{background:var(--coral);border-color:var(--coral)}
+.card.hot h3,.card.hot p,.card.hot .pin,.card.hot li{color:var(--on-coral)}
+.card.hot .label,.card.hot .big{color:var(--on-coral)}
+.card.hot .ic{background:color-mix(in srgb,var(--on-coral) 22%,transparent);color:var(--on-coral)}
+.ic{width:52px;height:52px;border-radius:16px;background:var(--coral-soft);color:var(--coral);display:flex;align-items:center;justify-content:center}
+.ic svg{width:28px;height:28px}
+.big{font-family:'Lora',serif;font-size:44px;line-height:1;color:var(--coral);font-variant-numeric:tabular-nums}
+.note{margin-top:22px;padding:18px 22px;border-left:3px solid var(--coral);background:var(--bg2);border-radius:0 14px 14px 0;color:var(--ink2)}
+.pin{font-size:16px;line-height:1.7;white-space:pre-line;color:var(--ink)}
+.ideas ol{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px;counter-reset:i}
+.ideas li{counter-increment:i;display:grid;grid-template-columns:34px 1fr;gap:8px;font-size:15.5px;line-height:1.45}
+.ideas li::before{content:counter(i,decimal-leading-zero);font-family:'Lora',serif;font-weight:600;color:var(--coral)}
+.check{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
+.check li{display:flex;gap:12px;align-items:flex-start;cursor:pointer;user-select:none;font-size:15.5px;line-height:1.45}
+.check li::before{content:"";flex:none;width:20px;height:20px;margin-top:2px;border-radius:6px;border:2px solid var(--coral)}
+.check li b{display:block;color:var(--ink)}
+.check li span{color:var(--ink2)}
+.check li.done{opacity:.55}
+.check li.done b{text-decoration:line-through}
+.check li.done::before{background:var(--coral);box-shadow:inset 0 0 0 3px var(--card)}
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:28px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+.step b{font-family:'Lora',serif;font-size:20px;color:var(--coral)}
+.step p{margin:6px 0 0;color:var(--ink2);font-size:15px}
+.final{margin-top:72px;padding:40px 32px;border-radius:28px;background:linear-gradient(140deg,var(--coral-soft),var(--bg2));border:1px solid var(--line)}
+.final h2{font-size:clamp(28px,4.4vw,40px)}
+.final p{max-width:60ch;color:var(--ink2)}
+.small{font-size:14px;color:var(--ink2)}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;padding-top:40px}.sun{width:220px}
+  .g2,.g3,.flow{grid-template-columns:1fr}
+}
+.why{display:grid;grid-template-columns:300px 1fr;gap:24px;margin-top:28px;align-items:start}
+.why img{width:100%;border-radius:22px;box-shadow:var(--shadow);display:block}
+.steps{display:grid;gap:16px;min-width:0}
+.covers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:28px}
+.cov{aspect-ratio:9/16;max-width:100%;border-radius:20px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;box-shadow:var(--shadow)}
+.cov span{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(15px,2.2vw,20px);line-height:1.15;text-transform:uppercase}
+.cov b{font-family:'Lora',serif;font-size:clamp(28px,4vw,40px);align-self:flex-end}
+.c1{background:linear-gradient(160deg,#E0452B,#8E1E10)}.c2{background:linear-gradient(160deg,#E85D8C,#93264F)}.c3{background:linear-gradient(160deg,#2F8F83,#1C5750)}.c4{background:linear-gradient(160deg,#3D6FD8,#1D3A85)}
+@media (max-width:760px){.why{grid-template-columns:1fr}.why img{max-width:300px}.covers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bar{height:18px;border-radius:999px;background:var(--bg2);overflow:hidden}
+.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--rose),var(--coral))}
+.barlabels{display:flex;justify-content:space-between;margin-top:10px;font-size:15px;color:var(--ink2)}
+.barlabels b{color:var(--ink);font-family:'Lora',serif;font-size:22px}
+.check[data-static] li{cursor:default}
+.flow .step b{font-size:18px}
+</style>
+</head><body>
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="label">разбор блога · лично для тебя</div>
+      <h1>Твой мир уже есть. <em>Осталось, чтобы в него пришли</em></h1>
+      <p>White &amp; Black Souls это не очередной лайфстайл, а своя атмосфера и свои истории. Разбираем, как превратить личный творческий уголок в проект, за которым следят тысячи.</p>
+    </div>
+    <div class="sun" aria-hidden="true"></div>
+  </header>
+
+  <nav aria-label="Разделы">
+    <a href="#nums">Где ты сейчас</a><a href="#good">Что уже есть</a><a href="#grow">Что мешает</a><a href="#core">Позиционирование</a><a href="#rubrics">Рубрики</a><a href="#hook">Как снимать</a><a href="#funnel">Воронка</a><a href="#money">Деньги</a><a href="#profile">Профиль</a><a href="#plan">План на 2 недели</a>
+  </nav>
+
+  <section id="nums">
+    <div class="label">где ты сейчас</div>
+    <h2>Самое начало, <em>и это лучший момент</em></h2>
+    <div class="grid g3">
+      <div class="card hot"><div class="big">69</div><h3>читателей в телеграме</h3><p>Те, кто пришёл первыми. Им уже интересен твой мир.</p></div>
+      <div class="card"><div class="big">2</div><h3>площадки</h3><p>Инстаграм и телеграм. Одна для новых людей, другая для своих.</p></div>
+      <div class="card"><div class="big">0</div><h3>системы пока</h3><p>Нет рубрик и ритма. Это не минус, а то, что можно собрать с нуля правильно.</p></div>
+    </div>
+  </section>
+
+  <section id="good">
+    <div class="label">что у тебя уже есть</div>
+    <h2>То, что нельзя <em>скопировать</em></h2>
+    <div class="grid g2">
+      <div class="card hot"><div class="ic" data-i="sun"></div><h3>Своя атмосфера</h3><p>Белое и чёрное, свечи, душа, фантазия. Тон задан с первого слова, и его не спутать с тысячами других блогов.</p></div>
+      <div class="card"><div class="ic" data-i="pen"></div><h3>Ты пишешь</h3><p>Всё в канале плод твоей фантазии. Авторские истории это редкость, а значит, у тебя есть то, чего нет у других.</p></div>
+      <div class="card"><div class="ic" data-i="eye"></div><h3>Ниша с огромным спросом</h3><p>Мистические и тёмные истории одни из самых досматриваемых роликов в рилс и тиктоке. Люди любят, когда немного страшно и очень красиво.</p></div>
+      <div class="card"><div class="ic" data-i="heart"></div><h3>Дуальность в названии</h3><p>White &amp; Black Souls это готовая фишка: светлая и тёмная сторона одной истории. На ней можно построить весь блог.</p></div>
+    </div>
+  </section>
+
+  <section id="grow">
+    <div class="label">что мешает</div>
+    <h2>Почему мир пока <em>видят единицы</em></h2>
+    <div class="grid g2">
+      <div class="card hot"><div class="ic" data-i="box"></div><h3>Истории живут только в тексте</h3><p>Текст в телеграме читают свои. Новые люди находят авторов через видео: рилсы и тикток.</p></div>
+      <div class="card"><div class="ic" data-i="send"></div><h3>Нет пути от видео к каналу</h3><p>Даже если ролик залетит, человеку некуда идти за продолжением. А продолжение это главная причина подписаться.</p></div>
+      <div class="card"><div class="ic" data-i="cal"></div><h3>Нет ритма</h3><p>Атмосферные проекты растут, когда читатель знает: новая история будет в пятницу вечером.</p></div>
+      <div class="card"><div class="ic" data-i="smile"></div><h3>Непонятно, кто автор</h3><p>Людям интересно, кто стоит за историями. Немного тебя, голос или руки в кадре, сильно повышают доверие.</p></div>
+    </div>
+  </section>
+
+  <section id="core">
+    <div class="label">позиционирование</div>
+    <h2>Три пути, <em>и они правда разные</em></h2>
+    <div class="grid g3">
+      <div class="card hot"><div class="label">советуем</div><h3>«Истории на ночь»</h3><p>Короткие мистические истории в видео: атмосферный кадр, твой голос, обрыв на самом интересном. Самые большие охваты, и каждая история ведёт за продолжением в телеграм.</p></div>
+      <div class="card"><div class="label">путь 2</div><h3>«Тёмная поэзия и эстетика»</h3><p>Короткие строки на красивом визуале: свечи, тени, ночь. Очень атмосферно, но расти медленнее, и аудиторию сложнее превратить в деньги.</p></div>
+      <div class="card"><div class="label">путь 3</div><h3>«Автор одной большой истории»</h3><p>Роман по главам в телеграме, а в рилс только отрывки и тизеры. Самая преданная аудитория, и путь к платному каналу или книге.</p></div>
+    </div>
+    <div class="note">Как бы сделали мы: «Истории на ночь» в рилс и тиктоке для охвата, а в телеграме продолжения и большая история по главам. Фишка White &amp; Black: у каждой истории есть светлая и тёмная версия.</div>
+  </section>
+
+  <section id="rubrics">
+    <div class="label">рубрики</div>
+    <h2>Четыре рубрики <em>для твоего мира</em></h2>
+    <div class="grid g2">
+      <div class="card ideas"><div class="label">рубрика 1 · охват</div><h3>«История на ночь»</h3><p>40–60 секунд, твой голос, обрыв в конце.</p><ol>
+        <li>Она каждую ночь слышала шаги за дверью</li>
+        <li>Письмо, которое пришло через 20 лет</li>
+        <li>Зеркало, в котором отражение опаздывало</li>
+      </ol></div>
+      <div class="card ideas"><div class="label">рубрика 2 · фишка</div><h3>«White или Black»</h3><p>Одна ситуация, две концовки. Зрители выбирают.</p><ol>
+        <li>Светлая и тёмная версия одной встречи</li>
+        <li>Какую концовку выбираете вы? Пишите в комментариях</li>
+        <li>Победившая версия выходит полностью в тг</li>
+      </ol></div>
+      <div class="card ideas"><div class="label">рубрика 3 · удержание</div><h3>«Продолжение следует»</h3><p>Серия из нескольких частей.</p><ol>
+        <li>Часть 1 в рилс, часть 2 в телеграме</li>
+        <li>Каждая часть заканчивается вопросом</li>
+        <li>Финал только для подписчиков канала</li>
+      </ol></div>
+      <div class="card ideas"><div class="label">рубрика 4 · доверие</div><h3>«За кулисами души»</h3><p>Немного тебя без раскрытия лица, если не хочешь.</p><ol>
+        <li>Откуда я беру истории</li>
+        <li>Ночь, свеча, ноутбук: как я пишу</li>
+        <li>История, которую я боялась дописать</li>
+      </ol></div>
+    </div>
+  </section>
+
+  <section id="hook">
+    <div class="label">как снимать</div>
+    <h2>Атмосфера <em>с первой секунды</em></h2>
+    <div class="grid g3">
+      <div class="card"><div class="label">первая секунда</div><h3>Фраза, от которой холодок</h3><p>Не вступление, а сразу событие: «В ту ночь она впервые не узнала свой голос».</p></div>
+      <div class="card"><div class="label">картинка</div><h3>Можно без лица</h3><p>Свеча, руки, окно ночью, тени. Твой голос и субтитры. Красиво и просто снять дома.</p></div>
+      <div class="card hot"><div class="label">конец</div><h3>Обрыв</h3><p>Обрываешь на самом интересном: «Что было дальше, в телеграме». Это и есть причина подписаться.</p></div>
+    </div>
+  </section>
+
+  <section id="funnel">
+    <div class="label">воронка</div>
+    <h2>Как новые люди <em>становятся твоими читателями</em></h2>
+    <div class="flow">
+      <div class="step"><b>Рилс и тикток</b><p>Короткая история с обрывом, её видят тысячи</p></div>
+      <div class="step"><b>Профиль</b><p>Понятная шапка и ссылка на канал</p></div>
+      <div class="step"><b>Телеграм</b><p>Продолжения, большая история по главам, свои люди</p></div>
+    </div>
+    <div class="note">Одно и то же видео выкладывай и в рилс, и в тикток. Мистические истории в тиктоке часто разлетаются ещё сильнее.</div>
+  </section>
+
+  <section id="money">
+    <div class="label">деньги</div>
+    <h2>Куда может <em>вырасти твой мир</em></h2>
+    <div class="grid g3">
+      <div class="card hot"><h3>Платный канал</h3><p>Когда наберётся аудитория, финалы и эксклюзивные истории можно открывать за небольшую подписку.</p></div>
+      <div class="card"><h3>Своя книга</h3><p>Сборник историй или роман по главам. Читатели из канала становятся первыми покупателями.</p></div>
+      <div class="card"><h3>Озвучка и тексты на заказ</h3><p>Атмосферные тексты и озвучка нужны брендам, квестам, тематическим проектам.</p></div>
+    </div>
+  </section>
+
+  <section id="profile">
+    <div class="label">профиль</div>
+    <h2>Шапка, после которой <em>хочется войти</em></h2>
+    <div class="grid g2">
+      <div class="card"><div class="label">вариант 1</div><p class="pin">White &amp; Black Souls 🕯️
+Мистические истории на ночь
+У каждой есть светлая и тёмная сторона
+Продолжение в тг 👇</p></div>
+      <div class="card"><div class="label">вариант 2</div><p class="pin">Истории, после которых не хочется выключать свет 🍷
+Всё здесь плод моей фантазии
+Финалы только в канале 👇</p></div>
+    </div>
+  </section>
+
+  <section id="plan">
+    <div class="label">что делать</div>
+    <h2>Две недели <em>по шагам</em></h2>
+    <p class="lead">Нажимай на пункт, когда сделала. Ритм: 3 видео в неделю и 2–3 поста в канале.</p>
+    <div class="grid g2">
+      <div class="card"><div class="label">неделя 1 · собрать</div><ul class="check">
+        <li><div><b>Новая шапка</b><span>и ссылка на телеграм</span></div></li>
+        <li><div><b>«История на ночь» #1</b><span>голос, свеча, обрыв в конце</span></div></li>
+        <li><div><b>Продолжение в тг</b><span>закрепить первым постом</span></div></li>
+        <li><div><b>«White или Black» #1</b><span>две концовки, голосование</span></div></li>
+        <li><div><b>Тот же ролик в тикток</b><span>без нового монтажа</span></div></li>
+      </ul></div>
+      <div class="card"><div class="label">неделя 2 · ритм</div><ul class="check">
+        <li><div><b>«История на ночь» #2 и #3</b><span>в одно и то же время вечером</span></div></li>
+        <li><div><b>«За кулисами души» #1</b><span>откуда я беру истории</span></div></li>
+        <li><div><b>Глава 1 большой истории</b><span>только в канале</span></div></li>
+        <li><div><b>Если что-то залетело</b><span>2–3 похожих истории в ближайшие дни</span></div></li>
+        <li><div><b>Посмотреть итоги</b><span>сколько людей пришло в канал после роликов</span></div></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <div class="final">
+    <div class="label">напоследок</div>
+    <h2>Свет и тьма у тебя уже есть. <em>Нужна дорога к ним</em></h2>
+    <p>Твой мир атмосферный и непохожий на другие. Но пока истории живут только в тексте для своих, его видят единицы. Как собрать из этого проект, за которым будут следить тысячи, разберём на созвоне.</p>
+  </div>
+</div>
+
+<script>
+const I={
+send:'<path d="M42 6L4 21l14 5 4 14 7-10 10 8z"/><path d="M18 26l24-20"/>',
+box:'<path d="M6 15l18-9 18 9v18l-18 9-18-9z"/><path d="M6 15l18 9 18-9M24 24v18"/>',
+cal:'<rect x="6" y="10" width="36" height="31" rx="4"/><line x1="6" y1="19" x2="42" y2="19"/><line x1="16" y1="5" x2="16" y2="13"/><line x1="32" y1="5" x2="32" y2="13"/>',
+smile:'<circle cx="24" cy="24" r="18"/><path d="M16 28q8 7 16 0"/><circle cx="18" cy="19" r="1.5"/><circle cx="30" cy="19" r="1.5"/>',
+camera:'<rect x="5" y="14" width="38" height="26" rx="5"/><circle cx="24" cy="27" r="7"/><path d="M17 14l3-5h8l3 5"/>',
+sun:'<circle cx="24" cy="24" r="8"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M38 10l-4 4M14 34l-4 4"/>',
+eye:'<path d="M3 24c7-10 14-14 21-14s14 4 21 14c-7 10-14 14-21 14S10 34 3 24z"/><circle cx="24" cy="24" r="6"/>',
+repeat:'<path d="M8 20a14 14 0 0 1 26-6l4-4v11H27l5-4a10 10 0 0 0-19 4"/><path d="M40 28a14 14 0 0 1-26 6l-4 4V27h11l-5 4a10 10 0 0 0 19-4"/>',
+chat:'<path d="M9 9h30a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H22l-9 7v-7H9a4 4 0 0 1-4-4V13a4 4 0 0 1 4-4z"/>',
+pen:'<path d="M31 7l10 10-23 23H8V30z"/><line x1="26" y1="12" x2="36" y2="22"/>',
+chart:'<path d="M7 41V7"/><path d="M7 41h34"/><path d="M13 33l9-10 7 6 12-14"/>',
+heart:'<path d="M24 40C10 30 6 22 10 15c4-6 11-5 14 1 3-6 10-7 14-1 4 7 0 15-14 25z"/>',
+pin:'<path d="M24 43s14-13 14-24a14 14 0 0 0-28 0c0 11 14 24 14 24z"/><circle cx="24" cy="19" r="5"/>'};
+document.querySelectorAll('.ic[data-i]').forEach(e=>{e.innerHTML='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">'+I[e.dataset.i]+'</svg>'});
+document.querySelectorAll('#plan .check li').forEach(li=>li.addEventListener('click',()=>li.classList.toggle('done')));
+</script>
+</body></html>
